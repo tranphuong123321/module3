@@ -1,5 +1,5 @@
-create database them_du_lieu;
-use them_du_lieu;
+create database truy_van_du_lieu;
+use truy_van_du_lieu;
 create table Class(
 class_id int not null primary key auto_increment,
 class_name varchar(60) not null,
@@ -45,5 +45,14 @@ insert into `subject` value (1,'CF',5,1),
 insert into mark (sub_id,student_id,mark,exam_times)
 value (1,1,8,1),
 (1,2,10,2),
-(2,1,12,1);
+(2, 1, 12, 1);
 
+select*from Student;
+select*from Student where `status`=true;
+select*from `Subject` where credit<10;
+select s.student_id,s.student_name, c.class_name 
+from student s join class c on s.class_id=c.class_id;
+SELECT s.student_id, s.student_name, c.class_name
+from student s join class c on s.class_id=c.class_id
+WHERE c.class_name = 'A1';
+select s.student_id, s.student_name,sub.sub_name,m.mark from student s join mark m on s.student_id=m.student_id where sub.sub_name='CF';

@@ -22,8 +22,8 @@ status bit default 1
 );
 create table mark(
 mark_id int not null primary key auto_increment,
-sub_id int not null unique,
-student_id int not null unique,
+sub_id int not null ,
+student_id int not null ,
 mark float default 0 check (mark between 0 and 100),
 exam_times tinyint default 1,
 foreign key (sub_id) references  Subject(sub_id),
