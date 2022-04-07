@@ -1,0 +1,24 @@
+h1{
+    color: red;
+    text-align: center;
+    font-family: "Times New Roman";
+}
+h2{
+    text-align: center;
+}
+img{
+
+    margin: 0 auto;
+    display: block;
+}
+div{
+    width: 30%;
+    margin: 0 auto;
+}
+h5{
+    text-align: left;
+    text-decoration: none;
+}
+h3{
+    text-align: center;
+}
