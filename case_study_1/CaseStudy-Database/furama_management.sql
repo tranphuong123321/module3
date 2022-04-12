@@ -402,3 +402,111 @@ from nhan_vien
 union
 select khach_hang.ma_khach_hang, khach_hang.ma_khach_hang, khach_hang.ho_ten, khach_hang.email, khach_hang.so_dien_thoai, khach_hang.ngay_sinh, khach_hang.dia_chi
 from khach_hang;
+
+-- 21
+create view V_NHANVIEN as
+select distinct nhan_vien.* from nhan_vien inner join hop_dong on nhan_vien.ma_nhan_vien=hop_dong.ma_nhan_vien where nhan_vien.dia_chi='Hải Châu'
+and hop_dong.ngay_lam_hop_dong='2019-12-12';
+
+-- 22
+update nhan_vien set nhan_vien.dia_chi='Liên Chiểu' where nhan_vien.ma_nhan_vien in (select ma_nhan_vien from v_nhanvien);
+
+-- 23
+DELIMITER //
+create procedure sp_1(in ma_khach_hang int)
+begin
+delete khach_hang from khach_hang where khach_hang.ma_khach_hang = ma_khach_hang;
+end //
+DELIMITER //;
+call sp_1(9);
+
+-- 24
+delimiter //
+drop procedure if exists sp_2 //
+create procedure sp_2(in ma_hop_dong int, in ma_nhan_vien int, in ma_khach_hang int, in ma_dich_vu int, in ngay_lam_hop_dong date, in ngay_ket_thuc date, in tien_dat_coc int, in tong_tien int)
+begin
+set @x=(select count(ma_hop_dong) from hop_dong where hop_dong.ma_hop_dong = hop_dong.ma_hop_dong);
+if((@x is null)
+and(select ma_nhan_vien from nhan_vien where nhan_vien.ma_nhan_vien=ma_nhan_vien)
+and(select ma_khach_hang from khach_hang where khach_hang.ma_khach_hang=ma_khach_hang)
+and(select ma_dich_vu from dich_vu where dich_vu.ma_dich_vu=ma_dich_vu)
+and(ngay_ket_thuc>ngay_lam_hop_dong)) then
+insert into hop_dong values (ma_hop_dong , ma_nhan_vien, ma_khach_hang, ma_dich_vu, ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc, tong_tien);
+else
+signal sqlstate '45000' set message_text='du lieu sai';
+end if;
+end //
+delimiter ;
+
+-- 25
+delimiter //
+drop trigger if exists tr_1 //
+create trigger tr_1 after delete on hop_dong for each row
+begin
+set @x=(select count(*) as count from hop_dong);
+end ; //
+delimiter ;
+set @x =0;
+delete from hop_dong where hop_dong.ma_hop_dong=10;
+select @x as 'total amount deleted';
+
+-- 26
+delimiter //
+drop trigger if exists tr_2 //
+create trigger tr_2 after update on hop_dong for each row
+begin
+if datediff(new.ngay_ket_thuc, old.ngay_lam_hop_dong)<2 then 
+signal sqlstate '45000' set message_text = 'ngay ket thuc hop dong phai lon hon ngay lam hop dong la 2 ngay' ;
+end if;
+end; //
+delimiter ;
+update furama_management.hop_dong set ngay_ket_thuc= '2018-12-29' where (ma_hop_dong='3');
+-- 27
+delimiter //
+drop function if exists func_1() //
+create function func_1() returns int
+deterministic
+begin
+create temporary table temp
+(select count(distinct ma_dich_vu) from hop_dong where ma_dich_vu in (select distinct ma_dich_vu from hop_dong)
+group by ma_dich_vu having sum(tong_tien)>2000000) ;
+set @tong_so_dich_vu=(select count(*) from temp);
+drop temporary table temp ;
+return @tong_so_dich_vu;
+end;
+select func_1() as 'so luong dich vu co tong tien tren 2000000'
+
+delimiter //
+drop function if exists func_2() //
+create function func_2(ma_khach_hang int ) returns int
+deterministic
+begin
+set @time_dai_nhat=(select max(datediff(hop_dong.ngay_ket_thuc,hop_dong.ngay_lam_hop_dong)) from hop_dong
+where hop_dong.ma_khach_hang = ma_khach_hang);
+return @time_dai_nhat;
+end;
+select func_2(4) as 'thoi gian dai nhat'
+
+-- 28
+delimiter //
+drop procedure if exists sp_3 //
+create procedure sp_3()
+begin
+declare dich_vu int default 0;
+declare is_done int default 0;
+declare con_tro cursor for
+select dich_vu.ma_dich_vu
+from dich_vu inner join hop_dong on dich_vu.ma_dich_vu=hop_dong.ma_dich_vu
+inner join loai_dich_vu on dich_du.ma_loai_dich_vu = loai_dich_vu.ma_loai_dich_vu
+where loai_dich_vu.ten_loai_dich_vu='room' and year(hop_dong.ngay_lam_hop_dong) between '2015' and '2025';
+declare continue handler for not found set is_done=1;
+open con_tro;
+get_list: loop
+fetch from con_tro into dich_vu;
+if is_done =1 then
+leave get_list;
+end if ;
+delete from hop_dong where hop_dong.ma_dich_vu=dich_vu;
+delete from dich_vu where dich_vu.ma_dich_vu=dich_vu;
+
+
