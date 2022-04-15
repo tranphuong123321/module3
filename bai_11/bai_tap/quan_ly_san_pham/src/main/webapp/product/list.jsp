@@ -13,9 +13,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-<h1>Products</h1>
+<h1 style="text-align: center">Products</h1>
 <p>
-  <a href="/products?action=create">Create new product</a>
+ <button> <a href="/products?action=create">Create new product</a></button>
 </p>
 <p>
   <a href="/products?action=search">Search</a>
@@ -24,18 +24,18 @@
 <table class="table">
 
   <tr>
-    <td> id</td>
-    <td>tên sản phẩm</td>
-    <td>giá sản phẩm</td>
-    <td>mô tả của sản phẩm</td>
-    <td>nhà sản xuất</td>
-    <td>cap nhat</td>
-    <td>xoa</td>
+    <th> Id</th>
+    <th>Tên sản phẩm</th>
+    <th>Giá sản phẩm</th>
+    <th>Mô tả của sản phẩm</th>
+    <th>Nhà sản xuất</th>
+    <th>Cập nhật</th>
+    <th>Xóa</th>
   </tr>
   <c:forEach items='${requestScope["products"]}'  var= "product">
     <tr>
       <td>${product.getId()}</td>
-      <td>${product.getName()}</td>
+      <td><a href="/products?action=view&id=${product.getId()}">${product.getName()}</a></td>
       <td>${product.getPrice()}</td>
       <td>${product.getStatus()}</td>
       <td>${product.getProducer()}</td>
