@@ -27,6 +27,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
   <component name="ProjectId" id="27s9fYDhTEZ4pxxNa02PgSqdYwx" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -37,6 +44,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../bai_11/bai_tap/quan_ly_san_pham" />
   </component>
   <component name="RunManager">
     <configuration name="Tomcat 9.0.62" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.62" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
@@ -136,7 +144,10 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1650098029951</updated>
-      <workItem from="1650098031940" duration="3431000" />
+      <workItem from="1650098031940" duration="4128000" />
+      <workItem from="1650244458404" duration="2628000" />
+      <workItem from="1650247264570" duration="1447000" />
+      <workItem from="1650252417009" duration="836000" />
     </task>
     <servers />
   </component>

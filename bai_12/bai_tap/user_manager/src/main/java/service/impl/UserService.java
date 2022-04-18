@@ -11,7 +11,6 @@ import java.util.*;
 public class UserService implements IUserService {
     public static final String STRING_REGEX = "^\\w+( \\w+)*$";
     public static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-
     private final IUserRepository userRepository = new UserRepository();
     @Override
     public void insertUser(User user) throws SQLException {
