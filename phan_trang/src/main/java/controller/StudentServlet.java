@@ -32,7 +32,7 @@ public class StudentServlet extends HttpServlet {
         studentList.add(new Student(11, "Tra", "02/07/1999", 9));
         studentList.add(new Student(12, "Hoat", "03/12/1999", 7));
 
-        request.setAttribute("studentListAbc", studentList);
-        request.getRequestDispatcher("/test-paging-sorting.jsp").forward(request, response);
+        request.setAttribute("studentList", studentList);
+        request.getRequestDispatcher("/test.jsp").forward(request, response);
     }
 }

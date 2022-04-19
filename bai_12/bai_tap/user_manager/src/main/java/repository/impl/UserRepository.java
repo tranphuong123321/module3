@@ -11,50 +11,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository implements IUserRepository {
-    BaseRepository baseRepository= new BaseRepository();
+    private static final String INSERT_USERS_SQL = "INSERT INTO users (name, email, country) VALUES (?, ?, ?);";
+    private static final String SELECT_USER_BY_ID = "select id,name,email,country from users where id =?";
+    private static final String SELECT_ALL_USERS = "select * from users";
+    private static final String DELETE_USERS_SQL = "delete from users where id = ?;";
+    private static final String UPDATE_USERS_SQL = "update users set name = ?,email= ?, country =? where id = ?;";
+    private static final String SEARCH_BY_ID = "select * from users where id = ?;";
+    private static final String SEARCH_BY_NAME = "select * from users where users.name like ? ;";
+    private static final String ORDERBY_USERS_SQL = "update users set name = ?,email= ?, country =? where id = ?;";
+    BaseRepository baseRepository = new BaseRepository();
 
-    private static final String INSERT_USER_SQL = "INSERT INTO users (name, email, country) VALUES (?, ?, ?);";
-    private static final String SELECT_USER_BY_ID = "SELECT id, name, email, country FROM users WHERE id = ?";
-    private static final String SELECT_ALL_USERS = "SELECT * FROM users;";
-    private static final String DELETE_USERS_SQL = "DELETE FROM users WHERE id = ?;";
-    private static final String UPDATE_USERS_SQL = "UPDATE users SET name = ?, email = ?, country = ? WHERE id = ?;";
-    private static final String SEARCH_USERS_BY_COUNTRY = "SELECT id, name, email, country FROM users WHERE country LIKE ?;";
-    private static final String ORDER_BY_NAME = "SELECT id, name, email, country FROM users ORDER BY name ASC";
     @Override
-    public void insertUser(User user) throws SQLException {
-        System.out.println(INSERT_USER_SQL);
+    public void insertUser(User user) {
         Connection connection = baseRepository.getConnection();
+        PreparedStatement preparedStatement = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_SQL);
+            preparedStatement = connection.prepareStatement(INSERT_USERS_SQL);
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getEmail());
             preparedStatement.setString(3, user.getCountry());
-            System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            connection.close();
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public User selectUserById(Integer id) {
+    public User selectUser(int id) {
+        Connection connection = baseRepository.getConnection();
         User user = null;
-        Connection connection = this.baseRepository.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_ID);
-            statement.setInt(1, id);
-            System.out.println(statement);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                String name = rs.getString("name");
-                String email = rs.getString("email");
-                String country = rs.getString("country");
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                String country = resultSet.getString("country");
                 user = new User(id, name, email, country);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         } finally {
             try {
                 connection.close();
@@ -66,19 +69,20 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public List<User> selectAllUser() {
-        List<User> users = new ArrayList<>();
-        Connection connection = this.baseRepository.getConnection();
+    public List<User> selectAllUsers() {
+        List<User> userList = new ArrayList<>();
+        Connection connection = baseRepository.getConnection();
+        PreparedStatement preparedStatement = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);
-            System.out.println(preparedStatement);
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                Integer id = rs.getInt("id");
-                String name = rs.getString("name");
-                String email = rs.getString("email");
-                String country = rs.getString("country");
-                users.add(new User(id, name, email, country));
+            preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            User user;
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                String country = resultSet.getString("country");
+                userList.add(new User(id, name, email, country));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,55 +93,16 @@ public class UserRepository implements IUserRepository {
                 e.printStackTrace();
             }
         }
-        return users;
+        return userList;
     }
 
     @Override
-    public boolean deleteUser(Integer id) throws SQLException {
-        boolean rowDelete;
+    public void deleteUser(int id) {
         Connection connection = baseRepository.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement(DELETE_USERS_SQL);
-            statement.setInt(1, id);
-            rowDelete = statement.executeUpdate() > 0;
-        } finally {
-            connection.close();
-        }
-        return rowDelete;
-    }
-
-    @Override
-    public boolean updateUser(User user) throws SQLException {
-        boolean rowUpdate;
-        Connection connection = baseRepository.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_SQL);
-            statement.setString(1, user.getName());
-            statement.setString(2, user.getEmail());
-            statement.setString(3, user.getCountry());
-            statement.setInt(4, user.getId());
-            rowUpdate = statement.executeUpdate() > 0;
-        } finally {
-            connection.close();
-        }
-        return rowUpdate;
-    }
-
-    @Override
-    public List<User> searchUserByCountry(String country1) {
-        List<User> userSearchResultList = new ArrayList<>();
-        Connection connection = baseRepository.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_USERS_BY_COUNTRY);
-            preparedStatement.setString(1, "%" + country1 + "%");
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                Integer id = rs.getInt("id");
-                String name = rs.getString("name");
-                String email = rs.getString("email");
-                String country = rs.getString("country");
-                userSearchResultList.add(new User(id, name, email, country));
-            }
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USERS_SQL);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -147,24 +112,19 @@ public class UserRepository implements IUserRepository {
                 e.printStackTrace();
             }
         }
-        return userSearchResultList;
     }
 
     @Override
-    public List<User> sortByName() {
-        List<User> orderedList = new ArrayList<>();
+    public void updateUser(User user) {
         Connection connection = baseRepository.getConnection();
+        PreparedStatement preparedStatement = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(ORDER_BY_NAME);
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                Integer id = rs.getInt("id");
-                String name = rs.getString("name");
-                String email = rs.getString("email");
-                String country = rs.getString("country");
-                orderedList.add(new User(id, name, email, country));
-            }
-
+            preparedStatement = connection.prepareStatement(UPDATE_USERS_SQL);
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setString(3, user.getCountry());
+            preparedStatement.setInt(4, user.getId());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -174,6 +134,50 @@ public class UserRepository implements IUserRepository {
                 e.printStackTrace();
             }
         }
-        return orderedList;
+    }
+
+    public List<User> searchByName(String name) {
+        List<User> userList = new ArrayList<>();
+        Connection connection = baseRepository.getConnection();
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_BY_NAME);
+            preparedStatement.setString(1, "%" + name + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
+                String name1 = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                String country = resultSet.getString("country");
+                User user = new User(id, name1, email, country);
+                userList.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+    @Override
+    public List<User> searchById(Integer id) {
+        List<User> userList = new ArrayList<>();
+        Connection connection = baseRepository.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_BY_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Integer id1 = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                String country = resultSet.getString("country");
+                User user = new User(id1, name, email, country);
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
     }
 }

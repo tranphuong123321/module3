@@ -27,6 +27,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
     <option name="FILTER_WARNINGS" value="false" />
@@ -44,7 +52,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../bai_11/bai_tap/quan_ly_san_pham" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../bai_09/bai_tap/caculator" />
   </component>
   <component name="RunManager">
     <configuration name="Tomcat 9.0.62" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.62" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
@@ -148,6 +156,9 @@
       <workItem from="1650244458404" duration="2628000" />
       <workItem from="1650247264570" duration="1447000" />
       <workItem from="1650252417009" duration="836000" />
+      <workItem from="1650270565741" duration="3129000" />
+      <workItem from="1650287416709" duration="5081000" />
+      <workItem from="1650330833931" duration="3989000" />
     </task>
     <servers />
   </component>

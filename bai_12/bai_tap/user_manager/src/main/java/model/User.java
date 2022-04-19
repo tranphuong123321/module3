@@ -9,6 +9,12 @@ public class User {
     public User() {
     }
 
+    public User(String name, String email, String country) {
+        this.name = name;
+        this.email = email;
+        this.country = country;
+    }
+
     public User(Integer id, String name, String email, String country) {
         this.id = id;
         this.name = name;
@@ -46,15 +52,5 @@ public class User {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", country='" + country + '\'' +
-                '}';
     }
 }

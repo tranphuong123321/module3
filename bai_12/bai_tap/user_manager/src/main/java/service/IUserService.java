@@ -7,19 +7,18 @@ import java.util.List;
 import java.util.Map;
 
 public interface IUserService {
-    void insertUser(User user) throws SQLException;
+    public void insertUser(User user);
 
-    User selectUserById(Integer id);
+    public void updateUser(User user);
 
-    List<User> selectAllUser();
+    public void deleteUser(int id);
 
-    boolean deleteUser(Integer id) throws SQLException;
+    public User selectUser(int id);
 
-    boolean updateUser(User user) throws SQLException;
+    public List<User> selectAllUsers();
 
-    List<User> searchUserByCountry(String country);
+    public List<User> searchByName(String name);
 
-    List<User> sortByName();
+    public List<User> searchById(Integer id);
 
-    Map<String, String> check(User user);
 }

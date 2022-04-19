@@ -35,6 +35,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunManager">
     <configuration name="Tomcat 9.0.62" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.62" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
@@ -135,6 +136,7 @@
       <updated>1649757535896</updated>
       <workItem from="1649757539231" duration="262000" />
       <workItem from="1649813239003" duration="106000" />
+      <workItem from="1650333387076" duration="91000" />
     </task>
     <servers />
   </component>

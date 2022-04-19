@@ -12,144 +12,160 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name = "UserServlet", value = "/users")
+@WebServlet(name = "controller.UserServlet", urlPatterns={"/users",""})
 public class UserServlet extends HttpServlet {
-    private IUserService userService;
+    private static final long serialVersionUID = 1L;
+    private User user;
+    private IUserService iUserService = new UserService();
 
     public void init() {
-        userService = new UserService();
+        user = new User();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         if (action == null) {
             action = "";
         }
+        switch (action) {
+            case "create":
+                showNewForm(request, response);
+                break;
+            case "edit":
+                showEditForm(request, response);
+                break;
+            case "delete":
+                deleteUser(request, response);
+                break;
+            case "search":
+                search(request,response);
+                break;
+            case "searchId":
+                searchId(request,response);
+                break;
+            default:
+                listUser(request, response);
+                break;
+        }
+    }
+
+    private void searchId(HttpServletRequest request, HttpServletResponse response) {
+        Integer id = Integer.valueOf(request.getParameter("searchId"));
+        List<User> userList = iUserService.searchById(id);
+        request.setAttribute("userList",userList);
         try {
-            switch (action) {
-                case "create":
-                    showCreateForm(request, response);
-                    break;
-                case "edit":
-                    showUpdateForm(request, response);
-                    break;
-                case "delete":
-                    deleteUser(request, response);
-                    break;
-                case "search":
-                    searchUserByCountry(request, response);
-                    break;
-                default:
-                    listUser(request, response);
-                    break;
-            }
-        } catch (SQLException e) {
-            throw new ServletException(e);
+            request.getRequestDispatcher("user/list.jsp").forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void search(HttpServletRequest request, HttpServletResponse response) {
+        String name = request.getParameter("searchName");
+        List<User> userList = iUserService.searchByName(name);
+        request.setAttribute("userList",userList);
+        try {
+            request.getRequestDispatcher("user/list.jsp").forward(request,response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ServletException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         if (action == null) {
             action = "";
         }
+        switch (action) {
+            case "create":
+                insertUser(request, response);
+                break;
+            case "edit":
+                updateUser(request, response);
+                break;
+            default:
+                listUser(request, response);
+                break;
+        }
+    }
+
+    private void listUser(HttpServletRequest request, HttpServletResponse response) {
+        List<User> userList = iUserService.selectAllUsers();
+        request.setAttribute("userList", userList);
         try {
-            switch (action) {
-                case "create":
-                    insertUser(request, response);
-                    break;
-                case "edit":
-                    updateUser(request, response);
-                    break;
-                default:
-                    break;
-            }
-        }catch (SQLException e) {
-            throw new ServletException(e);
+            request.getRequestDispatcher("user/list.jsp").forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private void listUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        List<User> listUser = userService.sortByName();
-        request.setAttribute("listUser", listUser);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/list.jsp");
-        dispatcher.forward(request, response);
+    private void showNewForm(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.getRequestDispatcher("user/create.jsp").forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void showCreateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/create.jsp");
-        dispatcher.forward(request, response);
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) {
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        User user = iUserService.selectUser(id);
+        request.setAttribute("user", user);
+        try {
+            request.getRequestDispatcher("user/edit.jsp").forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void insertUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        Integer id = (int) (Math.random() * 10000);
+    private void insertUser(HttpServletRequest request, HttpServletResponse response) {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String country = request.getParameter("country");
-        User user = new User(id, name, email, country);
-        Map<String, String> error = userService.check(user);
-        RequestDispatcher dispatcher;
-        if (error != null) {
-            request.setAttribute("error", error);
-        } else {
-            try {
-                userService.insertUser(user);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            request.setAttribute("messenger", "New user was created");
+        User user = new User(name, email, country);
+        iUserService.insertUser(user);
+        try {
+            response.sendRedirect("/users");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        dispatcher = request.getRequestDispatcher("user/create.jsp");
-        dispatcher.forward(request, response);
     }
 
-    private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-        Integer id = Integer.parseInt(request.getParameter("id"));
-        userService.deleteUser(id);
-        List<User> listUser = userService.selectAllUser();
-        request.setAttribute("listUser", listUser);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/list.jsp");
-        dispatcher.forward(request, response);
-    }
-
-    private void showUpdateForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-        Integer id = Integer.valueOf(request.getParameter("id"));
-        User existingUser = userService.selectUserById(id);
-        request.setAttribute("user", existingUser);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/update.jsp");
-        dispatcher.forward(request, response);
-    }
-
-    private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    private void updateUser(HttpServletRequest request, HttpServletResponse response) {
         Integer id = Integer.valueOf(request.getParameter("id"));
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String country = request.getParameter("country");
         User user = new User(id, name, email, country);
-        Map<String, String> error = userService.check(user);
-        RequestDispatcher dispatcher;
-        if (error != null) {
-            request.setAttribute("user", user);
-            request.setAttribute("error", error);
-        } else {
-            userService.updateUser(user);
-            request.setAttribute("messenger", "Update user success");
+        iUserService.updateUser(user);
+        try {
+            response.sendRedirect("/users");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        dispatcher = request.getRequestDispatcher("user/update.jsp");
-        dispatcher.forward(request, response);
     }
 
-    private void searchUserByCountry(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        String country = request.getParameter("search");
-        List<User> userSearchResultList = userService.searchUserByCountry(country);
-        if (userSearchResultList.isEmpty()) {
-            request.setAttribute("messenger", "Not found");
-        } else {
-            request.setAttribute("userSearchResultList", userSearchResultList);
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response) {
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        iUserService.deleteUser(id);
+        try {
+            response.sendRedirect("/users");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/search.jsp");
-        dispatcher.forward(request, response);
     }
 }
