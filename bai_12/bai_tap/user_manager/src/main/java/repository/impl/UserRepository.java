@@ -71,30 +71,30 @@ public class UserRepository implements IUserRepository {
     @Override
     public List<User> selectAllUsers() {
         List<User> userList = new ArrayList<>();
-        Connection connection = baseRepository.getConnection();
-        PreparedStatement preparedStatement = null;
+    Connection connection = baseRepository.getConnection();
+    PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            User user;
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String email = resultSet.getString("email");
-                String country = resultSet.getString("country");
-                userList.add(new User(id, name, email, country));
-            }
+        preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        User user;
+        while (resultSet.next()) {
+            Integer id = resultSet.getInt("id");
+            String name = resultSet.getString("name");
+            String email = resultSet.getString("email");
+            String country = resultSet.getString("country");
+            userList.add(new User(id, name, email, country));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-        return userList;
     }
+        return userList;
+}
 
     @Override
     public void deleteUser(int id) {
