@@ -16,9 +16,9 @@ public class UserRepository implements IUserRepository {
     private static final String SELECT_ALL_USERS = "select * from users";
     private static final String DELETE_USERS_SQL = "delete from users where id = ?;";
     private static final String UPDATE_USERS_SQL = "update users set name = ?,email= ?, country =? where id = ?;";
-    private static final String SEARCH_BY_ID = "select * from users where id = ?;";
+    private static final String SEARCH_BY_COUNTRY = "select * from users where users.country like ? ;";
     private static final String SEARCH_BY_NAME = "select * from users where users.name like ? ;";
-    private static final String ORDERBY_USERS_SQL = "update users set name = ?,email= ?, country =? where id = ?;";
+    private static final String ORDER_BY_NAME = "SELECT * FROM users  ORDER BY name ;";
     BaseRepository baseRepository = new BaseRepository();
 
     @Override
@@ -160,24 +160,51 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public List<User> searchById(Integer id) {
+    public List<User> searchByCountry(String country) {
         List<User> userList = new ArrayList<>();
         Connection connection = baseRepository.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_BY_ID);
-            preparedStatement.setInt(1, id);
+            PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_BY_COUNTRY);
+            preparedStatement.setString(1, "%" + country + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Integer id1 = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 String email = resultSet.getString("email");
-                String country = resultSet.getString("country");
-                User user = new User(id1, name, email, country);
+                String country1 = resultSet.getString("country");
+                User user = new User(id1, name, email, country1);
                 userList.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return userList;
+    }
+
+    @Override
+    public List<User> orderByName() {
+        List<User> orderedList = new ArrayList<>();
+        Connection connection = baseRepository.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(ORDER_BY_NAME);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Integer id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String country = rs.getString("country");
+                orderedList.add(new User(id, name, email, country));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return orderedList;
     }
 }

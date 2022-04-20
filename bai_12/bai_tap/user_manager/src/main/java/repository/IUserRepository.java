@@ -19,5 +19,7 @@ public interface IUserRepository {
 
     public List<User> searchByName(String name);
 
-    public List<User> searchById(Integer id);
+    public List<User> searchByCountry(String country);
+
+    public List<User> orderByName();
 }

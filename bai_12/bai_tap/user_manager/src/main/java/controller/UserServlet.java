@@ -42,8 +42,11 @@ public class UserServlet extends HttpServlet {
             case "search":
                 search(request,response);
                 break;
-            case "searchId":
-                searchId(request,response);
+            case "searchCountry":
+                searchCountry(request,response);
+                break;
+            case "orderByName":
+                orderByName(request,response);
                 break;
             default:
                 listUser(request, response);
@@ -51,9 +54,21 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    private void searchId(HttpServletRequest request, HttpServletResponse response) {
-        Integer id = Integer.valueOf(request.getParameter("searchId"));
-        List<User> userList = iUserService.searchById(id);
+    private void orderByName(HttpServletRequest request, HttpServletResponse response) {
+        List<User> userList = iUserService.orderByName();
+        request.setAttribute("userList",userList);
+        try {
+            request.getRequestDispatcher("user/list.jsp").forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void searchCountry(HttpServletRequest request, HttpServletResponse response) {
+       String country =request.getParameter("searchCountry");
+        List<User> userList = iUserService.searchByCountry(country);
         request.setAttribute("userList",userList);
         try {
             request.getRequestDispatcher("user/list.jsp").forward(request,response);

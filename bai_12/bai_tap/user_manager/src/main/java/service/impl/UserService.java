@@ -5,7 +5,6 @@ import repository.IUserRepository;
 import repository.impl.UserRepository;
 import service.IUserService;
 
-import java.sql.SQLException;
 import java.util.*;
 
 public class UserService implements IUserService {
@@ -43,8 +42,13 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> searchById(Integer id) {
-        return iUserRepository.searchById(id);
+    public List<User> searchByCountry(String country) {
+        return iUserRepository.searchByCountry(country);
+    }
+
+    @Override
+    public List<User> orderByName() {
+        return iUserRepository.orderByName();
     }
 
 
