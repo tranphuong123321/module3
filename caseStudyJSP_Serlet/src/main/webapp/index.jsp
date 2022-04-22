@@ -42,13 +42,13 @@
             <a style="background: #3b5998;color: white" class="hover nav-link pr-2 pl-2 border-right border-dark" href="/">Trang chủ</a>
           </li>
           <li class="nav-item">
-            <a class="hover nav-link pr-2 pl-2 border-right border-dark" href="#">Nhân viên</a>
+            <a class="hover nav-link pr-2 pl-2 border-right border-dark" href="/employees">Nhân viên</a>
           </li>
           <li class="nav-item">
             <a class="hover nav-link pr-2 pl-2 border-right border-dark" href="/customers">Khách hàng</a>
           </li>
           <li class="nav-item">
-            <a class=" hover nav-link pr-2 pl-2 border-right border-dark" href="#">Dịch vụ</a>
+            <a class=" hover nav-link pr-2 pl-2 border-right border-dark" href="/facilitys">Dịch vụ</a>
           </li>
           <li class="nav-item">
             <a class="hover nav-link pr-2 pl-2 " href="#">Hợp đồng</a>
@@ -103,21 +103,21 @@
         </ul>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img src="/static/image/m_furama.jpeg" alt="Los Angeles" width="1100" height="500">
+            <img src="1.jpg" alt="Los Angeles" width="1100" height="500">
             <div class="carousel-caption">
               <h3>Los Angeles</h3>
               <p>We had such a great time in LA!</p>
             </div>
           </div>
           <div class="carousel-item">
-            <img src="/static/image/m_furama-2.jpeg" alt="Chicago" width="1100" height="500">
+            <img src="2.jpg" alt="Chicago" width="1100" height="500">
             <div class="carousel-caption">
               <h3>Chicago</h3>
               <p>Thank you, Chicago!</p>
             </div>
           </div>
           <div class="carousel-item">
-            <img src="/static/image/m_furama-3.jpeg" alt="New York" width="1100" height="500">
+            <img src="3.jpg" alt="New York" width="1100" height="500">
             <div class="carousel-caption">
               <h3>New York</h3>
               <p>We love the Big Apple!</p>

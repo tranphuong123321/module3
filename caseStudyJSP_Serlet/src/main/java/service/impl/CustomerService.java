@@ -29,8 +29,8 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public void deleteCustomer(Integer id) throws SQLException {
-
+    public void deleteCustomer(Integer id){
+        customerRepository.deleteCustomer(id);
     }
 
     @Override
@@ -39,9 +39,11 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public List<Customer> searchByName(String name) {
-        return null;
+    public List<Customer> searchByName(String name,String email,Integer type) {
+        return customerRepository.searchByName(name,email,type);
     }
+
+
 
     @Override
     public List<CustomerType> findAllCustomerType() {

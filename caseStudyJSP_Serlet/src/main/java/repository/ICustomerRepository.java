@@ -17,10 +17,9 @@ public interface ICustomerRepository {
 
     void updateCustomer(Customer customer) ;
 
-    List<Customer> searchByName(String name);
+    List<Customer> searchByName(String name,String email,Integer type);
 
     List<CustomerType> findAllCustomerType();
 
     Customer selectCustomerByCode(String code);
-
 }

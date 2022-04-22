@@ -19,22 +19,29 @@
         input {
             font-size: small;
         }
+
     </style>
 </head>
 <body>
 <center>
-    <a href="/customers"> <h1>Customer Management</h1></a>
+    <a href="/customers"><h1>Customer Management</h1></a>
 
     <tr>
         <h2>
             <a href="/customers?action=create">Add New Customer</a>
-            <form action="/customers" method="get">
-                <input type="text" name="searchName" placeholder="Search by name">
-                <input type="text" value="search" name="action" hidden>
-                <input type="submit" value="Search">
-            </form>
-
         </h2>
+        <form method="get">
+            <input type="text" value="search" name="action" hidden>
+            <input type="text" name="searchName" placeholder="Search by name">
+            <input type="text" name="searchMail" placeholder="Search by email">
+            <select name="searchType" >
+                <option value="0"></option>
+                <c:forEach items="${customerTypeList}" var="type">
+                    <option value="${type.id}">${type.customerTypeName}</option>
+                </c:forEach>
+            </select>
+            <input type="submit" value="Search">
+        </form>
     </tr>
     <tr>
 </center>
@@ -59,7 +66,13 @@
     <c:forEach var="customer" items="${customerList}">
         <tr>
             <td><c:out value="${customer.id}"/></td>
-            <td><c:out value="${customer.customerTypeId}"/></td>
+            <td>
+                <c:forEach items="${customerTypeList}" var="customerType">
+                    <c:if test="${customer.customerTypeId == customerType.id}">
+                        ${customerType.customerTypeName}
+                    </c:if>
+                </c:forEach>
+            </td>
             <td><c:out value="${customer.name}"/></td>
             <td><c:out value="${customer.birthday}"/></td>
             <td>
@@ -95,7 +108,7 @@
             <form method="get">
                 <div class="modal-body">
                     <input type="hidden" name="action" value="delete">
-                    <input type="text" id="id-to-delete" name="id">
+                    <input readonly type="text" id="id-to-delete" name="id">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

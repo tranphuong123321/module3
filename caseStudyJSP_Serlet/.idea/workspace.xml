@@ -35,9 +35,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Jsp File" />
         <option value="Interface" />
         <option value="Class" />
-        <option value="Jsp File" />
       </list>
     </option>
   </component>
@@ -69,7 +69,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../bai_12/bai_tap/user_manager" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -175,21 +175,21 @@
       <option name="presentableId" value="Default" />
       <updated>1650417174404</updated>
       <workItem from="1650417176602" duration="27430000" />
+      <workItem from="1650458873174" duration="4628000" />
+      <workItem from="1650463785818" duration="602000" />
+      <workItem from="1650503665580" duration="13025000" />
+      <workItem from="1650522204619" duration="11976000" />
+      <workItem from="1650589850771" duration="9041000" />
+      <workItem from="1650599006427" duration="280000" />
+      <workItem from="1650606965161" duration="508000" />
+      <workItem from="1650607497460" duration="2000" />
+      <workItem from="1650607704969" duration="208000" />
+      <workItem from="1650614040202" duration="531000" />
+      <workItem from="1650615155325" duration="4984000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/service/impl/CustomerService.java</url>
-          <line>37</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

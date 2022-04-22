@@ -1,25 +1,31 @@
 package model;
 
-public abstract class Facility {
+public  class Facility {
     private Integer id;
-
-    private String name;
+    private String serviceName;
     private Integer area;
     private Double cost;
     private Integer maxPeople;
+    private  String roomStandard;
+    private  String descriptionOtherConvenience;
+    private  Integer poolArea;
+    private Integer numberOfFloors;
     private Integer rentTypeId;
     private Integer serviceTypeId;
 
     public Facility() {
     }
 
-    public Facility(Integer id, String name, Integer area, Double cost, Integer maxPeople, Integer rentTypeId, Integer serviceTypeId) {
+    public Facility(Integer id, String serviceName, Integer area, Double cost, Integer maxPeople, String roomStandard, String descriptionOtherConvenience, Integer poolArea, Integer numberOfFloors, Integer rentTypeId, Integer serviceTypeId) {
         this.id = id;
-
-        this.name = name;
+        this.serviceName = serviceName;
         this.area = area;
         this.cost = cost;
         this.maxPeople = maxPeople;
+        this.roomStandard = roomStandard;
+        this.descriptionOtherConvenience = descriptionOtherConvenience;
+        this.poolArea = poolArea;
+        this.numberOfFloors = numberOfFloors;
         this.rentTypeId = rentTypeId;
         this.serviceTypeId = serviceTypeId;
     }
@@ -32,13 +38,12 @@ public abstract class Facility {
         this.id = id;
     }
 
-
-    public String getName() {
-        return name;
+    public String getServiceName() {
+        return serviceName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public Integer getArea() {
@@ -63,6 +68,38 @@ public abstract class Facility {
 
     public void setMaxPeople(Integer maxPeople) {
         this.maxPeople = maxPeople;
+    }
+
+    public String getRoomStandard() {
+        return roomStandard;
+    }
+
+    public void setRoomStandard(String roomStandard) {
+        this.roomStandard = roomStandard;
+    }
+
+    public String getDescriptionOtherConvenience() {
+        return descriptionOtherConvenience;
+    }
+
+    public void setDescriptionOtherConvenience(String descriptionOtherConvenience) {
+        this.descriptionOtherConvenience = descriptionOtherConvenience;
+    }
+
+    public Integer getPoolArea() {
+        return poolArea;
+    }
+
+    public void setPoolArea(Integer poolArea) {
+        this.poolArea = poolArea;
+    }
+
+    public Integer getNumberOfFloors() {
+        return numberOfFloors;
+    }
+
+    public void setNumberOfFloors(Integer numberOfFloors) {
+        this.numberOfFloors = numberOfFloors;
     }
 
     public Integer getRentTypeId() {

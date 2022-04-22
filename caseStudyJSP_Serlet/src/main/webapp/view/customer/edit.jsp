@@ -32,10 +32,18 @@
             </c:if>
             <tr>
                 <th>CustomerTypeId</th>
+<%--                <td>--%>
+<%--                    <input type="text" name="customertypeid" size="45"--%>
+<%--                           value="${customer.customerTypeId}"--%>
+<%--                    />--%>
+<%--                </td>--%>
                 <td>
-                    <input type="text" name="customertypeid" size="45"
-                           value="${customer.customerTypeId}"
-                    />
+                    <select name="customertypeid" >
+                        <option value="0"></option>
+                        <c:forEach items="${customerTypeList}" var="type">
+                            <option value="${type.id}">${type.customerTypeName}</option>
+                        </c:forEach>
+                    </select>
                 </td>
             </tr>
             <tr>

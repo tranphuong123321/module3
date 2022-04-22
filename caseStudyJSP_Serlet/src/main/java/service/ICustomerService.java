@@ -14,11 +14,11 @@ public interface ICustomerService {
 
     void insertCustomer(Customer customer);
 
-    void deleteCustomer(Integer id) throws SQLException;
+    void deleteCustomer(Integer id);
 
     void updateCustomer(Customer customer) throws SQLException;
 
-    List<Customer> searchByName(String name);
+    List<Customer> searchByName(String name,String email,Integer type);
 
     List<CustomerType> findAllCustomerType();
 

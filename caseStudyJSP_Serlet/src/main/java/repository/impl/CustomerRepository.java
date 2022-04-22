@@ -13,20 +13,20 @@ import java.util.List;
 
 public class CustomerRepository implements ICustomerRepository {
     BaseRepository baseRepository = new BaseRepository();
-
     private static final String SELECT_ALL_CUSTOMER = "select * from khach_hang;";
-    private static final String SELECT_ALL_CUSTOMER_TYPE = "select * from customer_type";
     private static final String INSERT_NEW_CUSTOMER = "insert into khach_hang (ma_loai_khach,ho_ten,ngay_sinh,gioi_tinh,so_cmnd,so_dien_thoai,email,dia_chi) values (?,?,?,?,?,?,?,?);";
     private static final String SELECT_CUSTOMER_BY_ID = "select * from khach_hang where ma_khach_hang = ?";
     private static final String UPDATE_CUSTOMER_BY_ID = "update khach_hang set ma_loai_khach=?,ho_ten=?,ngay_sinh=?,gioi_tinh=?,so_cmnd=?,so_dien_thoai=?,email=?,dia_chi=?  where ma_khach_hang = ?;";
     private static final String DELETE_CUSTOMER_BY_ID = "delete from khach_hang where ma_khach_hang = ?;";
-    private static final String SEARCH_CUSTOMER_BY_NAME = "select * from customer where customer_name like ?";
+    private static final String SEARCH_CUSTOMER_BY_NAME = "select * from khach_hang where  (ho_ten like ? and ma_loai_khach = ? and email like ?)";
+    private static final String SEARCH_CUSTOMER = "select * from khach_hang where  (ho_ten like ?  and email like ?)";
+    private static final String SEARCH_CUSTOMER_BY_MAIL = "select * from khach_hang where email like ?";
+    private static final String SEARCH_CUSTOMER_BY_TYPE = "select * from khach_hang where ma_loai_khach = ?";
     private static final String SELECT_CUSTOMER_BY_CODE = "select * from customer where customer_code = ?;";
 
     @Override
     public List<Customer> findAllCustomer() {
         List<Customer> customerList = new ArrayList<>();
-
         try (Connection connection = baseRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_CUSTOMER)) {
             System.out.println(SELECT_ALL_CUSTOMER);
@@ -69,7 +69,7 @@ public class CustomerRepository implements ICustomerRepository {
                 String email = rs.getString("email");
                 String address = rs.getString("dia_chi");
                 Integer customerTypeId = rs.getInt("ma_loai_khach");
-               customer = new Customer(id,name, birthday,gender,idCard,phoneNumber,email,address,customerTypeId);
+               customer = new Customer(id1,name, birthday,gender,idCard,phoneNumber,email,address,customerTypeId);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -162,9 +162,118 @@ public class CustomerRepository implements ICustomerRepository {
 
 
     @Override
-    public List<Customer> searchByName(String name) {
-        return null;
+    public List<Customer> searchByName(String name,String email,Integer type) {
+        List<Customer> customerList = new ArrayList<>();
+        Connection connection = baseRepository.getConnection();
+
+        try {
+            if (type > 0){
+
+
+            PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_CUSTOMER_BY_NAME);
+            preparedStatement.setString(1, "%" + name + "%");
+            preparedStatement.setInt(2, type);
+            preparedStatement.setString(3, "%" + email + "%");
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Integer id = rs.getInt("ma_khach_hang");
+                String name1 = rs.getString("ho_ten");
+                String birthday = rs.getString("ngay_sinh");
+                Integer gender = rs.getInt("gioi_tinh");
+                String idCard = rs.getString("so_cmnd");
+                String phoneNumber = rs.getString("so_dien_thoai");
+                String emailResult = rs.getString("email");
+                String address = rs.getString("dia_chi");
+                Integer customerTypeId = rs.getInt("ma_loai_khach");
+                Customer customer = new Customer(id, name1, birthday, gender, idCard, phoneNumber, emailResult, address, customerTypeId);
+                customerList.add(customer);
+            }
+            }else {
+                PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_CUSTOMER);
+                preparedStatement.setString(1, "%" + name + "%");
+                preparedStatement.setString(2, "%" + email + "%");
+                ResultSet rs = preparedStatement.executeQuery();
+                while (rs.next()) {
+                    Integer id = rs.getInt("ma_khach_hang");
+                    String name1 = rs.getString("ho_ten");
+                    String birthday = rs.getString("ngay_sinh");
+                    Integer gender = rs.getInt("gioi_tinh");
+                    String idCard = rs.getString("so_cmnd");
+                    String phoneNumber = rs.getString("so_dien_thoai");
+                    String emailResult = rs.getString("email");
+                    String address = rs.getString("dia_chi");
+                    Integer customerTypeId = rs.getInt("ma_loai_khach");
+                    Customer customer = new Customer(id, name1,birthday,gender,idCard,phoneNumber,emailResult,address,customerTypeId);
+                    customerList.add(customer);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customerList;
     }
+
+
+//    @Override
+//    public List<Customer> searchByType(Integer type) {
+//        List<Customer> customerList = new ArrayList<>();
+//        Connection connection = baseRepository.getConnection();
+//
+//        try {
+//            PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_CUSTOMER_BY_TYPE);
+//            preparedStatement.setInt(1,  type );
+//            ResultSet rs = preparedStatement.executeQuery();
+//            while (rs.next()) {
+//                Integer id = rs.getInt("ma_khach_hang");
+//                String name1 = rs.getString("ho_ten");
+//                String birthday = rs.getString("ngay_sinh");
+//                Integer gender = rs.getInt("gioi_tinh");
+//                String idCard = rs.getString("so_cmnd");
+//                String phoneNumber = rs.getString("so_dien_thoai");
+//                String email = rs.getString("email");
+//                String address = rs.getString("dia_chi");
+//                Integer customerTypeId = rs.getInt("ma_loai_khach");
+//                Customer customer = new Customer(id, name1,birthday,gender,idCard,phoneNumber,email,address,customerTypeId);
+//                customerList.add(customer);
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return customerList;
+//    }
+//
+//    @Override
+//    public List<Customer> searchByMail(String mail) {
+//        List<Customer> customerList = new ArrayList<>();
+//        Connection connection = baseRepository.getConnection();
+//
+//        try {
+//            PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_CUSTOMER_BY_MAIL);
+//            preparedStatement.setString(1, "%" + mail + "%");
+//            ResultSet rs = preparedStatement.executeQuery();
+//            while (rs.next()) {
+//                Integer id = rs.getInt("ma_khach_hang");
+//                String name1 = rs.getString("ho_ten");
+//                String birthday = rs.getString("ngay_sinh");
+//                Integer gender = rs.getInt("gioi_tinh");
+//                String idCard = rs.getString("so_cmnd");
+//                String phoneNumber = rs.getString("so_dien_thoai");
+//                String email = rs.getString("email");
+//                String address = rs.getString("dia_chi");
+//                Integer customerTypeId = rs.getInt("ma_loai_khach");
+//                Customer customer = new Customer(id, name1,birthday,gender,idCard,phoneNumber,email,address,customerTypeId);
+//                customerList.add(customer);
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return customerList;
+//    }
+
+
 
     @Override
     public List<CustomerType> findAllCustomerType() {
