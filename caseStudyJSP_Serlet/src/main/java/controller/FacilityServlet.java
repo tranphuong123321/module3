@@ -101,17 +101,17 @@ public class FacilityServlet extends HttpServlet {
     private void insertFacility(HttpServletRequest request, HttpServletResponse response) {
         Integer id = Integer.parseInt(request.getParameter("id"));
 
-      String serviceName=request.getParameter("serviceName");
-       Integer area=Integer.parseInt(request.getParameter("area"));
-        Double cost=Double.parseDouble(request.getParameter("cost"));
-        Integer maxPeople=Integer.parseInt(request.getParameter("maxPeople"));
-        String roomStandard=request.getParameter("roomStandard");
-         String descriptionOtherConvenience=request.getParameter("descriptionOtherConvenience");
-        Integer poolArea=Integer.parseInt(request.getParameter("poolArea"));
-       Integer numberOfFloors=Integer.parseInt(request.getParameter("numberOfFloors"));
-        Integer rentTypeId=Integer.parseInt(request.getParameter("rentTypeId"));
-         Integer serviceTypeId=Integer.parseInt(request.getParameter("serviceTypeId"));
-        Facility facility = new Facility(id,serviceName,area,cost,maxPeople,roomStandard,descriptionOtherConvenience,poolArea,numberOfFloors,rentTypeId,serviceTypeId);
+        String serviceName = request.getParameter("serviceName");
+        Integer area = Integer.parseInt(request.getParameter("area"));
+        Double cost = Double.parseDouble(request.getParameter("cost"));
+        Integer maxPeople = Integer.parseInt(request.getParameter("maxPeople"));
+        String roomStandard = request.getParameter("roomStandard");
+        String descriptionOtherConvenience = request.getParameter("descriptionOtherConvenience");
+        Integer poolArea = Integer.parseInt(request.getParameter("poolArea"));
+        Integer numberOfFloors = Integer.parseInt(request.getParameter("numberOfFloors"));
+        Integer rentTypeId = Integer.parseInt(request.getParameter("rentTypeId"));
+        Integer serviceTypeId = Integer.parseInt(request.getParameter("serviceTypeId"));
+        Facility facility = new Facility(id, serviceName, area, cost, maxPeople, roomStandard, descriptionOtherConvenience, poolArea, numberOfFloors, rentTypeId, serviceTypeId);
         facilityService.insertFacility(facility);
         try {
             response.sendRedirect("/facilitys");

@@ -26,6 +26,12 @@
 <center>
     <a href="/customers"><h1>Customer Management</h1></a>
 
+    <c:if test="${message!=null}">
+        <div class="alert alert-success" role="alert">
+                ${message}
+        </div>
+    </c:if>
+
     <tr>
         <h2>
             <a href="/customers?action=create">Add New Customer</a>

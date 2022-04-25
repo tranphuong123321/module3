@@ -51,7 +51,7 @@
             <a class=" hover nav-link pr-2 pl-2 border-right border-dark" href="/facilitys">Dịch vụ</a>
           </li>
           <li class="nav-item">
-            <a class="hover nav-link pr-2 pl-2 " href="#">Hợp đồng</a>
+            <a class="hover nav-link pr-2 pl-2 " href="/contracts">Hợp đồng</a>
           </li>
         </ul>
 

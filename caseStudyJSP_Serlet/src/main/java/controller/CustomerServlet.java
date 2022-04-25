@@ -109,11 +109,8 @@ public class CustomerServlet extends HttpServlet {
     private void deleteCustomer(HttpServletRequest request, HttpServletResponse response) {
         Integer id = Integer.valueOf(request.getParameter("id"));
         customerService.deleteCustomer(id);
-        try {
-            response.sendRedirect("/customers");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       request.setAttribute("message"," BAN DA XOA THANH CONG");
+       this.listCustomer(request,response);
     }
 
 
@@ -125,6 +122,7 @@ public class CustomerServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         List<CustomerType> customerTypeList = customerTypeService.selectCustomerTypeList();
         request.setAttribute("customerTypeList", customerTypeList);
         request.setAttribute("customer", customer);

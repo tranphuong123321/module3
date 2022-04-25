@@ -141,13 +141,13 @@ public class EmployeeServlet extends HttpServlet {
         String name = request.getParameter("name");
         String birthday = request.getParameter("birthday");
         String idCard = request.getParameter("idCard");
-        int salary = Integer.parseInt(request.getParameter("salary"));
+       Integer salary = Integer.parseInt(request.getParameter("salary"));
         String phoneNumber = request.getParameter("phoneNumber");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
-        int positionId = Integer.parseInt(request.getParameter("positionId"));
-        int levelId = Integer.parseInt(request.getParameter("levelId"));
-        int partId = Integer.parseInt(request.getParameter("partId"));
+        Integer positionId = Integer.parseInt(request.getParameter("positionId"));
+        Integer levelId = Integer.parseInt(request.getParameter("levelId"));
+        Integer partId = Integer.parseInt(request.getParameter("partId"));
         Employee employee = new Employee(id, name, birthday, idCard, salary, phoneNumber, email, address, positionId, levelId, partId);
         try {
             employeeService.updateEmployee(employee);

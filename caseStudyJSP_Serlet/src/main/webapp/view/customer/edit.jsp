@@ -39,9 +39,13 @@
 <%--                </td>--%>
                 <td>
                     <select name="customertypeid" >
-                        <option value="0"></option>
                         <c:forEach items="${customerTypeList}" var="type">
-                            <option value="${type.id}">${type.customerTypeName}</option>
+                            <c:if test="${customer.customerTypeId == type.id }">
+                                <option value="${type.id}" selected >${type.customerTypeName}</option>
+                            </c:if>
+                            <c:if test="${customer.customerTypeId != type.id }">
+                                <option value="${type.id}" >${type.customerTypeName}</option>
+                            </c:if>
                         </c:forEach>
                     </select>
                 </td>
